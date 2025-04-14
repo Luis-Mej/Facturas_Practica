@@ -49,8 +49,17 @@ namespace Negocio.Servicios
                 var usuarioregistro = new Usuario(usuarioDTOs.Nombre, usuarioDTOs.Nombre.GenerarNombreUsuario(), Encriptador.Encriptar(usuarioDTOs.Contrasenia), "A");
 
                 _context.Usuarios.Add(usuarioregistro);
-                await _context.SaveChangesAsync();
-                await ts.CommitAsync();
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    await ts.CommitAsync();
+                }
+                catch (Exception)
+                {
+                    await ts.RollbackAsync();
+                    return new ResponseBase<UsuarioDTOs>(500, "Error al registrar el usuario");
+                }
             }
             return new ResponseBase<UsuarioDTOs>(200, "Usuario registrado.");
         }
@@ -95,12 +104,17 @@ namespace Negocio.Servicios
         public async Task<ResponseBase<UsuarioDTOs>> DeleteUsuarioDTO(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
+
             if (usuario == null || usuario.Estado != "A")
             {
                 return new ResponseBase<UsuarioDTOs>(400, "El usuario no existe");
             }
-            usuario.Estado = "I";
-            await _context.SaveChangesAsync();
+            using var ts = await _context.Database.BeginTransactionAsync();
+            {
+                usuario.Estado = "I";
+                await _context.SaveChangesAsync();
+                await ts.CommitAsync();
+            }
             return new ResponseBase<UsuarioDTOs>(200, "Usuario eliminado");
         }
 
