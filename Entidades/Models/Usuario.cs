@@ -5,6 +5,13 @@ namespace Entidades.Models;
 
 public class Usuario
 {
+    public Usuario(string nombre, string codigoUsuario, string contrasenia, string estado)
+    {
+        Nombre = nombre;
+        CodigoUsuario = codigoUsuario;
+        Contrasenia = contrasenia;
+        Estado = estado;
+    }
 
     public int IdUsuario { get; set; }
 

@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Dtos\Dtos.csproj" />
     <ProjectReference Include="..\Encryptar\Encryptar.csproj" />
+    <ProjectReference Include="..\Extensiones\Extensiones.csproj" />
     <ProjectReference Include="..\JWT\JWT.csproj" />
 	<ProjectReference Include="..\Entidades\Entidades.csproj" />
   </ItemGroup>

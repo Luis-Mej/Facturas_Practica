@@ -5,6 +5,13 @@ namespace Entidades.Models;
 
 public class Producto
 {
+    public Producto(string nombre, decimal precio, int stock, string? estado)
+    {
+        Nombre = nombre;
+        Precio = precio;
+        Stock = stock;
+        Estado = estado;
+    }
 
     public int Id { get; set; }
 

@@ -26,14 +26,14 @@ namespace Negocio.Servicios
         public async Task<ResponseBase<string>> Login(UsuarioLoginDTO loginDto)
         {
             var usuario = await _context.Usuarios
-                .FirstOrDefaultAsync(x => x.Nombre == loginDto.Nombre || x.CodigoUsuario == loginDto.Nombre);
+                .FirstOrDefaultAsync(x => x.CodigoUsuario == loginDto.Nombre);
 
-            if (usuario == null || string.IsNullOrEmpty(usuario.Contrasenia) || usuario.Contrasenia != loginDto.Contrasenia)
+            if (usuario != null && string.IsNullOrEmpty(loginDto.Contrasenia) && loginDto.Contrasenia != Encriptador.Encriptar(loginDto.Contrasenia))
             {
                 return new ResponseBase<string>(400, "Credenciales incorrectas");
             }
 
-            var usuarioDto = new UsuariosDT(usuario.Nombre, usuario.CodigoUsuario);
+            var usuarioDto = new UsuariosDT(loginDto.Nombre, loginDto.Contrasenia);
             string token = _tokenServicio.CrearToken(usuarioDto);
             return new ResponseBase<string>(200, "Login exitoso", token);
         }

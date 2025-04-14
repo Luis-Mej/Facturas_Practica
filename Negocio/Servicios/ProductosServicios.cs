@@ -23,7 +23,7 @@ namespace Negocio.Servicios
 
         public async Task<ResponseBase<List<ProductoDTO>>> GetProductosDTO()
         {
-            var listaProductos = await _context.Productos.Select(x => new ProductoDTO()
+            var listaProductos = await _context.Productos.Where(x=> x.Estado =="A").Select(x => new ProductoDTO()
             {
                 Nombre = x.Nombre,
                 Precio = x.Precio,
@@ -56,16 +56,23 @@ namespace Negocio.Servicios
                 return new ResponseBase<ProductoDTO>(400, "Producto ya existe");
             }
 
-            var productoRegistro = new Producto
+            using var ts = await _context.Database.BeginTransactionAsync();
             {
-                Nombre = productoDTO.Nombre,
-                Precio = productoDTO.Precio,
-                Stock = productoDTO.Stock,
-                Estado = "A"
-            };
+                var productoRegistro = new Producto(productoDTO.Nombre, productoDTO.Precio, productoDTO.Stock, "A");
 
-            _context.Productos.Add(productoRegistro);
-            await _context.SaveChangesAsync();
+
+                _context.Productos.Add(productoRegistro);
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    await ts.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    await ts.RollbackAsync();
+                    return new ResponseBase<ProductoDTO>(400, "Error al guardar el producto");
+                }
+            }
             return new ResponseBase<ProductoDTO>(200, "Producto ingresado");
         }
 
@@ -77,26 +84,33 @@ namespace Negocio.Servicios
                 return new ResponseBase<ProductoDTO>(400, "El producto no existe");
             }
 
-            productoExistente.Nombre = productoDTO.Nombre;
-            productoExistente.Precio = productoDTO.Precio;
-            productoExistente.Stock = productoDTO.Stock;
+            using var ts = await _context.Database.BeginTransactionAsync();
+            {
 
-            try
-            {
-                await _context.SaveChangesAsync();
+                productoExistente.Nombre = productoDTO.Nombre;
+                productoExistente.Precio = productoDTO.Precio;
+                productoExistente.Stock = productoDTO.Stock;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    await ts.CommitAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProductoExists(id))
+                    {
+                        await ts.RollbackAsync();
+                        return new ResponseBase<ProductoDTO>(400, "El producto no existe");
+                    }
+                    else
+                    {
+                        await ts.RollbackAsync();
+                        throw;
+                    }
+                }
+            }
                 return new ResponseBase<ProductoDTO>(200, "Producto actualizado");
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductoExists(id))
-                {
-                    return new ResponseBase<ProductoDTO>(400, "El producto no existe");
-                }
-                else
-                {
-                    throw;
-                }
-            }
         }
 
         public async Task<ResponseBase<ProductoDTO>> DeleteProductosDTO(int id)
@@ -106,9 +120,14 @@ namespace Negocio.Servicios
             {
                 return new ResponseBase<ProductoDTO>(400, "El producto no existe");
             }
-            productoExiste.Estado = "I";
-            await _context.SaveChangesAsync();
-            return new ResponseBase<ProductoDTO>(200, "Producto eliminado");
+
+            using var ts = await _context.Database.BeginTransactionAsync();
+            {
+                productoExiste.Estado = "I";
+                await _context.SaveChangesAsync();
+                await ts.CommitAsync();
+                return new ResponseBase<ProductoDTO>(200, "Producto eliminado");
+            }
         }
 
         private bool ProductoExists(int id)

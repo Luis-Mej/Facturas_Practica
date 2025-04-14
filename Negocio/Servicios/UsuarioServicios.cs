@@ -11,6 +11,7 @@ using JWT.JwtServicios;
 using Microsoft.EntityFrameworkCore;
 using Entidades.Context;
 using Entidades.Models;
+using Extensiones;
 
 namespace Negocio.Servicios
 {
@@ -23,28 +24,9 @@ namespace Negocio.Servicios
             _context = context;
         }
 
-        public async Task<ResponseBase<string>> Login(UsuarioLoginDTO loginDto, ITokenServicio tokenServicio)
-        {
-            var usuario = await _context.Usuarios
-                .Where(x =>
-                    (x.Nombre == loginDto.Nombre || x.CodigoUsuario == loginDto.Nombre) &&
-                    x.Estado == "A")
-                .FirstOrDefaultAsync();
-
-            if (usuario == null || !Encriptador.CompararHash(loginDto.Contrasenia, usuario.Contrasenia))
-            {
-                return new ResponseBase<string>(400, "Credenciales incorrectas");
-            }
-
-            var usuarioDto = new UsuariosDT(usuario.Nombre, usuario.CodigoUsuario);
-            string token = tokenServicio.CrearToken(usuarioDto);
-
-            return new ResponseBase<string>(200, "Login exitoso", token);
-        }
-
         public async Task<ResponseBase<List<UsuariosDT>>> GetUsuarioDTO()
         {
-            var listaUsuarios = await _context.Usuarios.Select(x => new UsuariosDT()
+            var listaUsuarios = await _context.Usuarios.Where(x=> x.Estado == "A").Select(x => new UsuariosDT()
             {
                 CodigoUsuario = x.CodigoUsuario,
                 Nombre = x.Nombre
@@ -55,23 +37,21 @@ namespace Negocio.Servicios
 
         public async Task<ResponseBase<UsuarioDTOs>> PostUsuarioDTO(UsuarioDTOs usuarioDTOs)
         {
-            var usuarioExiste = await _context.Usuarios.FirstOrDefaultAsync(x=> x.Nombre==usuarioDTOs.Nombre);
+            var usuarioExiste = await _context.Usuarios.FirstOrDefaultAsync(x => x.Nombre == usuarioDTOs.Nombre);
             if (usuarioExiste != null)
             {
                 return new ResponseBase<UsuarioDTOs>(400, "Usuario ya existente.");
             }
 
-            var usuarioregistro = new Usuario
+            using var ts = await _context.Database.BeginTransactionAsync();
             {
-                Nombre = usuarioDTOs.Nombre,
-                CodigoUsuario = usuarioDTOs.CodigoUsuario,
-                Contrasenia = usuarioDTOs.Contrasenia,
-                Estado = "A"
-            };
 
-            _context.Usuarios.Add(usuarioregistro);
-            await _context.SaveChangesAsync();
+                var usuarioregistro = new Usuario(usuarioDTOs.Nombre, usuarioDTOs.Nombre.GenerarNombreUsuario(), Encriptador.Encriptar(usuarioDTOs.Contrasenia), "A");
 
+                _context.Usuarios.Add(usuarioregistro);
+                await _context.SaveChangesAsync();
+                await ts.CommitAsync();
+            }
             return new ResponseBase<UsuarioDTOs>(200, "Usuario registrado.");
         }
 
@@ -83,23 +63,30 @@ namespace Negocio.Servicios
                 return new ResponseBase<UsuarioDTOs>(400, "El usuario no existe");
             }
 
-            usuario.Nombre = usuarioDTOs.Nombre;
-            usuario.CodigoUsuario = usuarioDTOs.CodigoUsuario;
-            usuario.Contrasenia = usuarioDTOs.Contrasenia;
+            using var ts = await _context.Database.BeginTransactionAsync();
+            {
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (System.Data.Entity.Infrastructure.DbUpdateConcurrencyException)
-            {
-                if (!UsuarioExists(id))
+                usuario.Nombre = usuarioDTOs.Nombre;
+                usuario.CodigoUsuario = usuarioDTOs.Nombre.GenerarNombreUsuario();
+                usuario.Contrasenia = usuarioDTOs.Contrasenia;
+
+                try
                 {
-                    return new ResponseBase<UsuarioDTOs>(400, "El usuario no coincide con el id");
+                    await _context.SaveChangesAsync();
+                    await ts.CommitAsync();
                 }
-                else
+                catch (System.Data.Entity.Infrastructure.DbUpdateConcurrencyException)
                 {
-                    throw;
+                    if (!UsuarioExists(id))
+                    {
+                        await ts.RollbackAsync();
+                        return new ResponseBase<UsuarioDTOs>(400, "El usuario no coincide con el id");
+                    }
+                    else
+                    {
+                        await ts.RollbackAsync();
+                        throw;
+                    }
                 }
             }
             return new ResponseBase<UsuarioDTOs>(500, "No se encuentra al usuario");
