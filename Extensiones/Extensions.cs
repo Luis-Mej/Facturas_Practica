@@ -19,5 +19,10 @@ namespace Extensiones
 
             return nombres[0].Substring(0, 1).ToUpper() + nombres[1].ToUpper();
         }
+
+        public static int CalcularValorIva(this decimal precio, decimal iva)
+        {
+            return (int)(precio * iva);
+        }
     }
 }

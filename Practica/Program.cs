@@ -88,7 +88,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Habilitar CORS para todos los orígenes
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>

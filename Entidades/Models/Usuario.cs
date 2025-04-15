@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Entidades.Models;
 
-public class Usuario
+public partial class Usuario
 {
-    public Usuario(string nombre, string codigoUsuario, string contrasenia, string estado)
+    public Usuario(string nombre, string codigoUsuario, string contrasenia ,string estado)
     {
         Nombre = nombre;
         CodigoUsuario = codigoUsuario;
@@ -22,4 +22,6 @@ public class Usuario
     public string Contrasenia { get; set; } = null!;
 
     public string Estado { get; set; } = null!;
+
+    public virtual ICollection<CabFact> CabFacts { get; set; } = new List<CabFact>();
 }

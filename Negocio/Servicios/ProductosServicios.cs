@@ -67,7 +67,7 @@ namespace Negocio.Servicios
                     await _context.SaveChangesAsync();
                     await ts.CommitAsync();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     await ts.RollbackAsync();
                     return new ResponseBase<ProductoDTO>(400, "Error al guardar el producto");
