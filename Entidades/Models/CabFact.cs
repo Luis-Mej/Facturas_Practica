@@ -5,7 +5,7 @@ namespace Entidades.Models;
 
 public partial class CabFact
 {
-    public CabFact(string nombreCliente, string identificacion, string? telefono, string? email, DateTime? fechaCreacion, decimal subTotal, decimal? iva, decimal? total)
+    public CabFact(string nombreCliente, string identificacion, string? telefono, string? email, DateTime? fechaCreacion, decimal subTotal, decimal? iva, decimal? total, int? usuario)
     {
         NombreCliente = nombreCliente;
         Identificacion = identificacion;
@@ -15,6 +15,7 @@ public partial class CabFact
         SubTotal = subTotal;
         Iva = iva;
         Total = total;
+        IdUsuario = usuario;
     }
 
     public int IdFactura { get; set; }
