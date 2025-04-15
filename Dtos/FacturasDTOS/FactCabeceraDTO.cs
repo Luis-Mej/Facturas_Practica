@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Dtos.FacturasDTOS
 {
-    public class FacturaCabDTO
+    public class FactCabeceraDTO
     {
-        public FacturaCabDTO(string nombreCliente, string identificacion, string? telefono, string? email, DateTime? fechaCreacion, decimal subTotal, decimal? iva, decimal? total, int? idUsuario)
+        public FactCabeceraDTO(string nombreCliente, string identificacion, string? telefono, string? email, DateTime? fechaCreacion, decimal subTotal, decimal? iva, decimal? total, string nombreUsuario)
         {
             NombreCliente = nombreCliente;
             Identificacion = identificacion;
@@ -18,18 +18,17 @@ namespace Dtos.FacturasDTOS
             SubTotal = subTotal;
             Iva = iva;
             Total = total;
-            IdUsuario = idUsuario;
+            NombreUsuario = nombreUsuario;
         }
 
-        public string NombreCliente { get; set; } = null!;
-        public string Identificacion { get; set; } = null!;
+        public string NombreCliente { get; set; } = string.Empty;
+        public string Identificacion { get; set; } = string.Empty;
         public string? Telefono { get; set; } = string.Empty;
         public string? Email { get; set; } = string.Empty;
         public DateTime? FechaCreacion { get; set; }
         public decimal SubTotal { get; set; }
         public decimal? Iva { get; set; }
         public decimal? Total { get; set; }
-        public int? IdUsuario { get; set; }
-
+        public string NombreUsuario { get; set; } = string.Empty;
     }
 }
