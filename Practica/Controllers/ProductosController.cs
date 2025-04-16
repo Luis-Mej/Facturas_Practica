@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace Practica.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/Productos")]
     [Authorize (AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme) ]
     public class ProductosController : ControllerBase
     {

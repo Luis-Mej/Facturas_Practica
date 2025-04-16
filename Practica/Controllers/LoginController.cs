@@ -4,7 +4,7 @@ using Negocio.Servicios;
 
 namespace Practica.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Login")]
     [ApiController]
     public class LoginController : ControllerBase
     {

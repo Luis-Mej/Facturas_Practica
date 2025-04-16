@@ -19,64 +19,55 @@ namespace Negocio.Servicios
             _context = context;
         }
 
-        public async Task<ResponseBase<List<FacturaVisualDTO>>> GetFactura()
+        public ResponseBase<FacturaVisualDTO> GetFacturaById(int idFactura)
         {
             try
             {
-                var facturas = await _context.CabFacts
-                    .Include(f => f.DetFacts)
-                    .ToListAsync();
+                var facturas = from factCab in _context.CabFacts
+                               join factDetalle in _context.DetFacts on factCab.IdFactura equals factDetalle.IdFactura
+                               join producto in _context.Productos on factDetalle.IdProducto equals producto.Id
+                               join usuario in _context.Usuarios on factCab.IdUsuario equals usuario.IdUsuario
+                               where factCab.IdFactura == idFactura
 
-                var usuarios = await _context.Usuarios.ToListAsync();
-                var productos = await _context.Productos.ToListAsync();
+                               select new
+                               {
+                                   factDetalle,
+                                   factCab,
+                                   producto,
+                                   usuario
+                               };
 
-                var resultado = facturas.Select(f =>
+                FacturaVisualDTO facturaVisualDTO = new FacturaVisualDTO()
                 {
-                    var usuario = usuarios.FirstOrDefault(u => u.IdUsuario == f.IdUsuario);
-                    var detalles = f.DetFacts.Select(d =>
+
+                    Cabecera = new FactCabeceraDTO(facturas.FirstOrDefault().factCab.NombreCliente,
+                                                   facturas.FirstOrDefault().factCab.Identificacion,
+                                                   facturas.FirstOrDefault().factCab.Telefono,
+                                                   facturas.FirstOrDefault().factCab.Email,
+                                                   facturas.FirstOrDefault().factCab.FechaCreacion,
+                                                   facturas.FirstOrDefault().factCab.SubTotal,
+                                                   facturas.FirstOrDefault().factCab.Iva,
+                                                   facturas.FirstOrDefault().factCab.Total,
+                                                   facturas.FirstOrDefault().usuario.CodigoUsuario),
+                    Detalles = facturas.Select(x => x.factDetalle).Select(d => new FactDetalleDTO()
                     {
-                        var producto = productos.FirstOrDefault(p => p.Id == d.IdProducto);
-                        var precio = producto?.Precio ?? 0;
-                        var cantidad = d.Cantidad ?? 0;
-                        var subTotal = precio * cantidad;
+                        Cantidad = d.Cantidad,
+                        NombreProducto = _context.Productos.FirstOrDefault(p => p.Id == d.IdProducto).Nombre,
+                        Precio = _context.Productos.FirstOrDefault(p => p.Id == d.IdProducto).Precio,
+                    }).ToList()
 
-                        return new FactDetalleDTO(
-                            producto?.Nombre ?? "Desconocido",
-                            precio,
-                            cantidad,
-                            subTotal
-                        );
-                    }).ToList();
-
-                    return new FacturaVisualDTO(
-                        new FactCabeceraDTO(
-                            f.NombreCliente,
-                            f.Identificacion,
-                            f.Telefono,
-                            f.Email,
-                            f.FechaCreacion,
-                            f.SubTotal,
-                            f.Iva,
-                            f.Total,
-                            usuario?.Nombre ?? "Desconocido"
-                        ),
-                        detalles
-                    );
-                }).ToList();
-
-                return new ResponseBase<List<FacturaVisualDTO>>(200, "Facturas obtenidas", resultado);
+                };
+                return new ResponseBase<FacturaVisualDTO>(200, "Facturas obtenidas", facturaVisualDTO);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return new ResponseBase<List<FacturaVisualDTO>>(400, "Error al obtener las facturas");
+                return new ResponseBase<FacturaVisualDTO>(400, "Error al obtener las facturas");
             }
         }
 
-
-
-
-        public async Task<ResponseBase<FacturaDTO>> PostFactura(FacturaDTO facturaDTO)
+        public async Task<ResponseBase<FacturaVisualDTO>> PostFactura(FacturaDTO facturaDTO)
         {
+            FacturaVisualDTO facturaVisualDTO = new FacturaVisualDTO();
             using var ts = await _context.Database.BeginTransactionAsync();
             {
                 var factura = new CabFact(facturaDTO.FacturaCab.NombreCliente,
@@ -95,7 +86,24 @@ namespace Negocio.Servicios
                 List<DetFact> detalles = new List<DetFact>();
                 foreach (var item in facturaDTO.Detalles)
                 {
-                    var detalle = new DetFact(factura.IdFactura,item.IdProducto, item.Cantidad);
+                    var detalle = new DetFact(factura.IdFactura, item.IdProducto, item.Cantidad);
+
+                    var producto =  _context.Productos.Where(x => x.Id == item.IdProducto).FirstOrDefault();
+
+                    if (producto.Stock == 0)
+                    {
+                        await ts.RollbackAsync();
+                        return new ResponseBase<FacturaVisualDTO>(400, $"El producto: {producto.Nombre} no tiene stock");
+                    }
+                    else if ( item.Cantidad > producto.Stock)
+                    {
+                        await ts.RollbackAsync();
+                        return new ResponseBase<FacturaVisualDTO>(400, $"La cantidad sobrepasa al stock de {producto.Nombre}");
+                    }
+                    producto.Stock -= item.Cantidad.GetValueOrDefault();
+
+                    _context.Update(producto);
+                    await _context.SaveChangesAsync();
                     detalles.Add(detalle);
                 }
 
@@ -104,92 +112,18 @@ namespace Negocio.Servicios
 
                 try
                 {
-                    
+
                     await ts.CommitAsync();
+                    facturaVisualDTO = this.GetFacturaById(factura.IdFactura).Data;
                 }
 
                 catch (Exception)
                 {
                     await ts.RollbackAsync();
-                    return new ResponseBase<FacturaDTO>(400, "Error al guardar la factura");
+                    return new ResponseBase<FacturaVisualDTO>(400, "Error al guardar la factura");
                 }
             }
-            return new ResponseBase<FacturaDTO>(200, "Factura guardada");
-        }
-
-        public async Task<ResponseBase<FacturaDTO>> PutFacturasDTO(int id, FacturaDTO facturaDTO)
-        {
-            var factura = await _context.CabFacts
-                .Include(f => f.DetFacts)
-                .FirstOrDefaultAsync(x => x.IdFactura == id);
-
-            if (factura == null)
-            {
-                return new ResponseBase<FacturaDTO>(400, "Factura no encontrada o no existe");
-            }
-
-            using var ts = await _context.Database.BeginTransactionAsync();
-            try
-            {
-                factura.NombreCliente = facturaDTO.FacturaCab.NombreCliente;
-                factura.Identificacion = facturaDTO.FacturaCab.Identificacion;
-                factura.Telefono = facturaDTO.FacturaCab.Telefono;
-                factura.Email = facturaDTO.FacturaCab.Email;
-                factura.FechaCreacion = facturaDTO.FacturaCab.FechaCreacion;
-                factura.SubTotal = facturaDTO.FacturaCab.SubTotal;
-                factura.Iva = facturaDTO.FacturaCab.Iva;
-                factura.Total = facturaDTO.FacturaCab.Total;
-                factura.IdUsuario = facturaDTO.FacturaCab.IdUsuario;
-
-                _context.CabFacts.Update(factura);
-                await _context.SaveChangesAsync();
-
-             
-                _context.DetFacts.RemoveRange(factura.DetFacts);
-                await _context.SaveChangesAsync();
-
-                
-                var nuevosDetalles = facturaDTO.Detalles.Select(d => new DetFact(factura.IdFactura, d.IdProducto, d.Cantidad)).ToList();
-                await _context.DetFacts.AddRangeAsync(nuevosDetalles);
-                await _context.SaveChangesAsync();
-
-                await ts.CommitAsync();
-                return new ResponseBase<FacturaDTO>(200, "Factura actualizada");
-            }
-            catch (Exception)
-            {
-                await ts.RollbackAsync();
-                return new ResponseBase<FacturaDTO>(400, "Error al actualizar la factura");
-            }
-        }
-
-        public async Task<ResponseBase<string>> DeleteFactura (int id)
-        {
-            var factura = await _context.CabFacts.Include(x => x.DetFacts).FirstOrDefaultAsync(x => x.IdFactura == id);
-
-            if (factura == null)
-            {
-                return new ResponseBase<string>(400, "Factura no encontrada o no existe");
-            }
-
-            using var ts = await _context.Database.BeginTransactionAsync();
-
-            try
-            {
-                _context.DetFacts.RemoveRange(factura.DetFacts);
-                await _context.SaveChangesAsync();
-
-                _context.CabFacts.Remove(factura);
-                await _context.SaveChangesAsync();
-
-                await ts.CommitAsync();
-                return new ResponseBase<string>(200, "Factura eliminada");
-            }
-            catch (Exception)
-            {
-                await ts.RollbackAsync();
-                return new ResponseBase<string>(400, "Error al eliminar la factura");
-            }
+            return new ResponseBase<FacturaVisualDTO>(200, "Factura guardada", facturaVisualDTO);
         }
     }
 }

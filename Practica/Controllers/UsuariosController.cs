@@ -5,7 +5,7 @@ using JWT.JwtServicios;
 
 namespace Practica.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Usuarios")]
     [ApiController]
     public class UsuariosController : ControllerBase
     {

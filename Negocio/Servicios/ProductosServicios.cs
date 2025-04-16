@@ -23,7 +23,7 @@ namespace Negocio.Servicios
 
         public async Task<ResponseBase<List<ProductoDTO>>> GetProductosDTO()
         {
-            var listaProductos = await _context.Productos.Where(x=> x.Estado =="A").Select(x => new ProductoDTO()
+            var listaProductos = await _context.Productos.Where(x=> x.Estado =="A" && x.Stock!=0).Select(x => new ProductoDTO()
             {
                 Nombre = x.Nombre,
                 Precio = x.Precio,

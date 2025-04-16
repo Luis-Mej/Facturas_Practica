@@ -64,6 +64,7 @@ if (string.IsNullOrEmpty(jwtSettings.Key))
 builder.Services.AddScoped<ITokenServicio, TokenServicio>();
 builder.Services.AddScoped<UsuarioServicios>();
 builder.Services.AddScoped<ProductosServicios>();
+builder.Services.AddScoped<FacturaServicios>();
 builder.Services.AddScoped<LoginServicios>();
 
 

@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JWT", "JWT\JWT.csproj", "{C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensiones", "Extensiones\Extensiones.csproj", "{76FC644E-9C8D-4E19-B843-C628AD05D745}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientAPI", "ClientAPI\ClientAPI.csproj", "{9FEF7C2F-6A2F-4575-8268-9494E324DF66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,9 +55,16 @@ Global
 		{76FC644E-9C8D-4E19-B843-C628AD05D745}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76FC644E-9C8D-4E19-B843-C628AD05D745}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76FC644E-9C8D-4E19-B843-C628AD05D745}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FEF7C2F-6A2F-4575-8268-9494E324DF66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FEF7C2F-6A2F-4575-8268-9494E324DF66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FEF7C2F-6A2F-4575-8268-9494E324DF66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FEF7C2F-6A2F-4575-8268-9494E324DF66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9FEF7C2F-6A2F-4575-8268-9494E324DF66} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A84FB115-AB94-4A6F-BC8A-57BF81F0D21D}

@@ -7,7 +7,7 @@ using Negocio.Servicios;
 
 namespace Practica.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Facturas")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
@@ -20,10 +20,10 @@ namespace Practica.Controllers
             _facturaServicio = facturaServicio;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetFactura()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetFactura(int id)
         {
-            var resultado = await _facturaServicio.GetFactura();
+            var resultado = _facturaServicio.GetFacturaById(id);
             return StatusCode(resultado.StatusCode, resultado);
         }
 
@@ -31,20 +31,6 @@ namespace Practica.Controllers
         public async Task<IActionResult> PostFactura([FromBody] FacturaDTO facturaDto)
         {
             var resultado = await _facturaServicio.PostFactura(facturaDto);
-            return StatusCode(resultado.StatusCode, resultado);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFactura(int id, [FromBody] FacturaDTO facturaDto)
-        {
-            var resultado = await _facturaServicio.PutFacturasDTO(id, facturaDto);
-            return StatusCode(resultado.StatusCode, resultado);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFactura([FromBody] int id)
-        {
-            var resultado = await _facturaServicio.DeleteFactura(id);
             return StatusCode(resultado.StatusCode, resultado);
         }
     }
