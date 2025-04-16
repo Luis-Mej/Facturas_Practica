@@ -57,6 +57,7 @@
             // 
             // txtLogin
             // 
+            txtLogin.BorderStyle = BorderStyle.FixedSingle;
             txtLogin.Location = new Point(77, 62);
             txtLogin.Name = "txtLogin";
             txtLogin.Size = new Size(211, 23);
@@ -64,6 +65,7 @@
             // 
             // txtContrasena
             // 
+            txtContrasena.BorderStyle = BorderStyle.FixedSingle;
             txtContrasena.Location = new Point(77, 152);
             txtContrasena.Name = "txtContrasena";
             txtContrasena.PasswordChar = '*';
@@ -73,12 +75,14 @@
             // 
             // btnLogin
             // 
+            btnLogin.BackColor = SystemColors.Control;
+            btnLogin.ForeColor = SystemColors.ControlText;
             btnLogin.Location = new Point(137, 208);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(93, 23);
             btnLogin.TabIndex = 4;
             btnLogin.Text = "Iniciar Sesión";
-            btnLogin.UseVisualStyleBackColor = true;
+            btnLogin.UseVisualStyleBackColor = false;
             btnLogin.Click += btnLogin_Click;
             // 
             // Login
