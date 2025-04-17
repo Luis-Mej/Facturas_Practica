@@ -9,7 +9,6 @@ namespace Dtos.FacturasDTOS
     public class FacturaVisualDTO
     {
         
-
         public FactCabeceraDTO Cabecera { get; set; }
         public List<FactDetalleDTO> Detalles { get; set; }
     }
