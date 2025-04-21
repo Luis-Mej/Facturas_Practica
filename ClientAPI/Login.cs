@@ -8,7 +8,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Dtos;
 using Dtos.UsuariosDTOS;
+using Sesion;
 
 namespace ClientAPI
 {
@@ -19,21 +21,34 @@ namespace ClientAPI
             InitializeComponent();
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private async void btnLogin_Click(object sender, EventArgs e)
         {
             UsuarioLoginDTO usuarioLoginDTO = new UsuarioLoginDTO(txtLogin.Text, txtContrasena.Text);
 
-            HttpClient client = new HttpClient();
+            using HttpClient client = new HttpClient();
 
             string Url = "https://localhost:7037/api/Login";
             var json = JsonSerializer.Serialize(usuarioLoginDTO);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = client.PostAsync(Url, content).Result;
+            var response = await client.PostAsync(Url, content);
 
             if (response.IsSuccessStatusCode)
             {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+
+                var parsed = JsonSerializer.Deserialize<ResponseBase<string>>(jsonResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                SesionActual.Token = parsed.Data;
+
                 MessageBox.Show("Login exitoso");
-                this.Close();
+                this.Hide();
+
+                Producto producto = new Producto();
+                producto.FormClosed += (s, args) => this.Close();
+                producto.Show();
             }
             else
             {

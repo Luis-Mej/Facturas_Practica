@@ -8,6 +8,9 @@ namespace Dtos
 {
     public class ResponseBase<T>
     {
+        public ResponseBase() 
+        { 
+        }
         public ResponseBase(int statusCode, string message, T data)
         {
             StatusCode = statusCode;

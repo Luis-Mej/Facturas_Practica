@@ -29,83 +29,113 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            btnEliminar = new Button();
+            btnEditar = new Button();
+            btnAgregar = new Button();
             panel2 = new Panel();
+            txtBuscarProducto = new TextBox();
+            btnCarrito = new Button();
             panel3 = new Panel();
-            dataGridView1 = new DataGridView();
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
+            dgvProductos = new DataGridView();
             panel1.SuspendLayout();
+            panel2.SuspendLayout();
             panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvProductos).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
-            panel1.Controls.Add(button3);
-            panel1.Controls.Add(button2);
-            panel1.Controls.Add(button1);
+            panel1.Controls.Add(btnEliminar);
+            panel1.Controls.Add(btnEditar);
+            panel1.Controls.Add(btnAgregar);
             panel1.Dock = DockStyle.Bottom;
             panel1.Location = new Point(0, 396);
             panel1.Name = "panel1";
             panel1.Size = new Size(672, 37);
             panel1.TabIndex = 0;
             // 
+            // btnEliminar
+            // 
+            btnEliminar.Dock = DockStyle.Right;
+            btnEliminar.Location = new Point(447, 0);
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.Size = new Size(75, 37);
+            btnEliminar.TabIndex = 2;
+            btnEliminar.Text = "Eliminar P.";
+            btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += btnEliminar_Click;
+            // 
+            // btnEditar
+            // 
+            btnEditar.Dock = DockStyle.Right;
+            btnEditar.Location = new Point(522, 0);
+            btnEditar.Name = "btnEditar";
+            btnEditar.Size = new Size(75, 37);
+            btnEditar.TabIndex = 1;
+            btnEditar.Text = "Actualizar";
+            btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Click += btnEditar_Click;
+            // 
+            // btnAgregar
+            // 
+            btnAgregar.Dock = DockStyle.Right;
+            btnAgregar.Location = new Point(597, 0);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(75, 37);
+            btnAgregar.TabIndex = 0;
+            btnAgregar.Text = "Agregar P.";
+            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Click += btnAgregar_Click;
+            // 
             // panel2
             // 
+            panel2.Controls.Add(txtBuscarProducto);
+            panel2.Controls.Add(btnCarrito);
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(672, 31);
+            panel2.Size = new Size(672, 25);
             panel2.TabIndex = 1;
+            // 
+            // txtBuscarProducto
+            // 
+            txtBuscarProducto.Dock = DockStyle.Left;
+            txtBuscarProducto.Location = new Point(0, 0);
+            txtBuscarProducto.Multiline = true;
+            txtBuscarProducto.Name = "txtBuscarProducto";
+            txtBuscarProducto.Size = new Size(522, 25);
+            txtBuscarProducto.TabIndex = 1;
+            txtBuscarProducto.TextChanged += txtBuscarProducto_TextChanged;
+            // 
+            // btnCarrito
+            // 
+            btnCarrito.Dock = DockStyle.Right;
+            btnCarrito.Location = new Point(561, 0);
+            btnCarrito.Name = "btnCarrito";
+            btnCarrito.Size = new Size(111, 25);
+            btnCarrito.TabIndex = 0;
+            btnCarrito.Text = "Agregar al carrito";
+            btnCarrito.TextAlign = ContentAlignment.MiddleRight;
+            btnCarrito.UseVisualStyleBackColor = true;
+            btnCarrito.Click += btnCarrito_Click;
             // 
             // panel3
             // 
-            panel3.Controls.Add(dataGridView1);
+            panel3.Controls.Add(dgvProductos);
             panel3.Dock = DockStyle.Fill;
-            panel3.Location = new Point(0, 31);
+            panel3.Location = new Point(0, 25);
             panel3.Name = "panel3";
-            panel3.Size = new Size(672, 365);
+            panel3.Size = new Size(672, 371);
             panel3.TabIndex = 2;
             // 
-            // dataGridView1
+            // dgvProductos
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.Location = new Point(0, 0);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(672, 365);
-            dataGridView1.TabIndex = 0;
-            // 
-            // button1
-            // 
-            button1.Dock = DockStyle.Right;
-            button1.Location = new Point(597, 0);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 37);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            button2.Dock = DockStyle.Right;
-            button2.Location = new Point(522, 0);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 37);
-            button2.TabIndex = 1;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            button3.Dock = DockStyle.Right;
-            button3.Location = new Point(447, 0);
-            button3.Name = "button3";
-            button3.Size = new Size(75, 37);
-            button3.TabIndex = 2;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
+            dgvProductos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProductos.Dock = DockStyle.Fill;
+            dgvProductos.Location = new Point(0, 0);
+            dgvProductos.Name = "dgvProductos";
+            dgvProductos.Size = new Size(672, 371);
+            dgvProductos.TabIndex = 0;
             // 
             // Producto
             // 
@@ -118,8 +148,10 @@
             Name = "Producto";
             Text = "Producto";
             panel1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvProductos).EndInit();
             ResumeLayout(false);
         }
 
@@ -128,9 +160,11 @@
         private Panel panel1;
         private Panel panel2;
         private Panel panel3;
-        private DataGridView dataGridView1;
-        private Button button3;
-        private Button button2;
-        private Button button1;
+        private DataGridView dgvProductos;
+        private Button btnEliminar;
+        private Button btnEditar;
+        private Button btnAgregar;
+        private Button btnCarrito;
+        private TextBox txtBuscarProducto;
     }
 }
