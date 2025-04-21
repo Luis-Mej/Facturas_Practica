@@ -208,19 +208,19 @@ namespace ClientAPI
             }
         }
 
-        //private void btnCarrito_Click(object sender, EventArgs e)
-        //{
-        //    var seleccionados = ObtenerProductosSeleccionados();
+        private void btnCarrito_Click(object sender, EventArgs e)
+        {
+            var seleccionados = ObtenerProductosSeleccionados();
 
-        //    if (seleccionados.Count == 0)
-        //    {
-        //        MessageBox.Show("No se han seleccionado productos.");
-        //        return;
-        //    }
+            if (seleccionados.Count == 0)
+            {
+                MessageBox.Show("No se han seleccionado productos.");
+                return;
+            }
 
-        //    Carrito carritoForm = new Carrito(seleccionados);
-        //    carritoForm.ShowDialog();
-        //}
+            Carrito carritoForm = new Carrito(seleccionados);
+            carritoForm.ShowDialog();
+        }
 
         private void txtBuscarProducto_TextChanged(object sender, EventArgs e)
         {
