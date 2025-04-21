@@ -98,6 +98,7 @@
             Controls.Add(dgvCarrito);
             Controls.Add(panel1);
             Name = "Carrito";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Carrito";
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvCarrito).EndInit();

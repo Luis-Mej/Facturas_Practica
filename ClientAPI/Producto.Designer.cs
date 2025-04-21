@@ -37,6 +37,7 @@
             btnCarrito = new Button();
             panel3 = new Panel();
             dgvProductos = new DataGridView();
+            btnCerrar = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -45,6 +46,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(btnCerrar);
             panel1.Controls.Add(btnEliminar);
             panel1.Controls.Add(btnEditar);
             panel1.Controls.Add(btnAgregar);
@@ -57,7 +59,7 @@
             // btnEliminar
             // 
             btnEliminar.Dock = DockStyle.Right;
-            btnEliminar.Location = new Point(447, 0);
+            btnEliminar.Location = new Point(437, 0);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(75, 37);
             btnEliminar.TabIndex = 2;
@@ -68,11 +70,11 @@
             // btnEditar
             // 
             btnEditar.Dock = DockStyle.Right;
-            btnEditar.Location = new Point(522, 0);
+            btnEditar.Location = new Point(512, 0);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(75, 37);
+            btnEditar.Size = new Size(85, 37);
             btnEditar.TabIndex = 1;
-            btnEditar.Text = "Actualizar";
+            btnEditar.Text = "Actualizar P.";
             btnEditar.UseVisualStyleBackColor = true;
             btnEditar.Click += btnEditar_Click;
             // 
@@ -137,6 +139,17 @@
             dgvProductos.Size = new Size(672, 371);
             dgvProductos.TabIndex = 0;
             // 
+            // btnCerrar
+            // 
+            btnCerrar.Dock = DockStyle.Left;
+            btnCerrar.Location = new Point(0, 0);
+            btnCerrar.Name = "btnCerrar";
+            btnCerrar.Size = new Size(92, 37);
+            btnCerrar.TabIndex = 3;
+            btnCerrar.Text = "Cerrar Sesión";
+            btnCerrar.UseVisualStyleBackColor = true;
+            btnCerrar.Click += btnCerrar_Click;
+            // 
             // Producto
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -146,6 +159,7 @@
             Controls.Add(panel2);
             Controls.Add(panel1);
             Name = "Producto";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Producto";
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
@@ -166,5 +180,6 @@
         private Button btnAgregar;
         private Button btnCarrito;
         private TextBox txtBuscarProducto;
+        private Button btnCerrar;
     }
 }

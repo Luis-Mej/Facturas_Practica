@@ -18,8 +18,6 @@ namespace ClientAPI
     public partial class Producto : Form
     {
         private List<ProductoDTO> listaProductos = new List<ProductoDTO>();
-        private Dictionary<string, int> productoIds = new Dictionary<string, int>();
-
         public Producto()
         {
             InitializeComponent();
@@ -100,22 +98,22 @@ namespace ClientAPI
             }
         }
 
-        //private async Task<int?> ObtenerIdProductosPorNombre(string nombre)
-        //{
-        //    using (HttpClient client = new HttpClient())
-        //    {
-        //        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", SesionActual.Token);
-        //        var respuesta = await client.GetAsync($"https://localhost:7037/api/Productos?nombre={Uri.EscapeDataString(nombre)}");
+        private async Task<int?> ObtenerIdProductosPorNombre(string nombre)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", SesionActual.Token);
+                var respuesta = await client.GetAsync($"https://localhost:7037/api/Productos?nombre={Uri.EscapeDataString(nombre)}");
 
-        //        if (respuesta.IsSuccessStatusCode)
-        //        {
-        //            var json = await respuesta.Content.ReadAsStringAsync();
-        //            var resultado = JsonSerializer.Deserialize<ResponseBase<List<ProductoDTO>>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
-        //            return resultado?.Data?.FirstOrDefault()?.Id;
-        //        }
-        //        return null;
-        //    }
-        //}
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    var json = await respuesta.Content.ReadAsStringAsync();
+                    var resultado = JsonSerializer.Deserialize<ResponseBase<List<ProductoDTO>>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return resultado?.Data?.FirstOrDefault()?.Id;
+                }
+                return null;
+            }
+        }
 
         private List<ProductoDTO> ObtenerProductosSeleccionados()
         {
@@ -165,7 +163,7 @@ namespace ClientAPI
         {
             if (dgvProductos.CurrentRow?.DataBoundItem is ProductoDTO productoElegido)
             {
-                if (productoElegido.Id <= 0)
+                if (productoElegido.Id == 0)
                 {
                     MessageBox.Show("No se pudo determinar el ID del producto seleccionado.");
                     return;
@@ -210,19 +208,19 @@ namespace ClientAPI
             }
         }
 
-        private void btnCarrito_Click(object sender, EventArgs e)
-        {
-            var seleccionados = ObtenerProductosSeleccionados();
+        //private void btnCarrito_Click(object sender, EventArgs e)
+        //{
+        //    var seleccionados = ObtenerProductosSeleccionados();
 
-            if (seleccionados.Count == 0)
-            {
-                MessageBox.Show("No se han seleccionado productos.");
-                return;
-            }
+        //    if (seleccionados.Count == 0)
+        //    {
+        //        MessageBox.Show("No se han seleccionado productos.");
+        //        return;
+        //    }
 
-            Carrito carritoForm = new Carrito(seleccionados);
-            carritoForm.ShowDialog();
-        }
+        //    Carrito carritoForm = new Carrito(seleccionados);
+        //    carritoForm.ShowDialog();
+        //}
 
         private void txtBuscarProducto_TextChanged(object sender, EventArgs e)
         {
@@ -231,6 +229,18 @@ namespace ClientAPI
             var productosFiltrados = listaProductos.Where(p => p.Nombre.ToLower().Contains(filtro) || p.Precio.ToString().Contains(filtro) || p.Stock.ToString().Contains(filtro)).ToList();
 
             dgvProductos.DataSource = productosFiltrados;
+        }
+
+        private void btnCerrar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("¿Desea cerrar la sesión?", "Confirmación", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                Login login = new Login();
+                login.FormClosed += (s, args) => this.Close();
+                login.Show();
+            }
+
+
         }
     }
 }

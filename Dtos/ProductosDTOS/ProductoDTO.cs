@@ -12,8 +12,9 @@ namespace Dtos.ProductosDTOS
         {
         }
 
-        public ProductoDTO(string nombre, decimal precio, int stock)
+        public ProductoDTO(int id, string nombre, decimal precio, int stock)
         {
+            Id = id;
             Nombre = nombre;
             Precio = precio;
             Stock = stock;

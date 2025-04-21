@@ -33,6 +33,7 @@
             txtLogin = new TextBox();
             txtContrasena = new TextBox();
             btnLogin = new Button();
+            linkRegistro = new LinkLabel();
             SuspendLayout();
             // 
             // label1
@@ -48,7 +49,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(77, 134);
+            label2.Location = new Point(77, 104);
             label2.Name = "label2";
             label2.Size = new Size(67, 15);
             label2.TabIndex = 1;
@@ -66,7 +67,7 @@
             // txtContrasena
             // 
             txtContrasena.BorderStyle = BorderStyle.FixedSingle;
-            txtContrasena.Location = new Point(77, 152);
+            txtContrasena.Location = new Point(77, 122);
             txtContrasena.Name = "txtContrasena";
             txtContrasena.PasswordChar = '*';
             txtContrasena.Size = new Size(211, 23);
@@ -77,7 +78,7 @@
             // 
             btnLogin.BackColor = SystemColors.Control;
             btnLogin.ForeColor = SystemColors.ControlText;
-            btnLogin.Location = new Point(137, 208);
+            btnLogin.Location = new Point(135, 182);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(93, 23);
             btnLogin.TabIndex = 4;
@@ -85,11 +86,23 @@
             btnLogin.UseVisualStyleBackColor = false;
             btnLogin.Click += btnLogin_Click;
             // 
+            // linkRegistro
+            // 
+            linkRegistro.AutoSize = true;
+            linkRegistro.Location = new Point(149, 221);
+            linkRegistro.Name = "linkRegistro";
+            linkRegistro.Size = new Size(59, 15);
+            linkRegistro.TabIndex = 5;
+            linkRegistro.TabStop = true;
+            linkRegistro.Text = "Registrate";
+            linkRegistro.LinkClicked += linkRegistro_LinkClicked;
+            // 
             // Login
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(372, 261);
+            Controls.Add(linkRegistro);
             Controls.Add(btnLogin);
             Controls.Add(txtContrasena);
             Controls.Add(txtLogin);
@@ -109,5 +122,6 @@
         private TextBox txtLogin;
         private TextBox txtContrasena;
         private Button btnLogin;
+        private LinkLabel linkRegistro;
     }
 }

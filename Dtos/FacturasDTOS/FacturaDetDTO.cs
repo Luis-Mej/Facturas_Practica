@@ -8,6 +8,10 @@ namespace Dtos.FacturasDTOS
 {
     public class FacturaDetDTO
     {
+        public FacturaDetDTO()
+        {
+
+        }
         public FacturaDetDTO(int idProducto, int? cantidad)
         {
             IdProducto = idProducto;

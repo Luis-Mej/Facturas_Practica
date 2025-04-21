@@ -55,5 +55,12 @@ namespace ClientAPI
                 MessageBox.Show("Error al iniciar sesión");
             }
         }
+
+        private void linkRegistro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Registrar registrar = new Registrar();
+            registrar.Show();
+            this.Hide();
+        }
     }
 }

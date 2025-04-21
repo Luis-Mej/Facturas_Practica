@@ -50,6 +50,7 @@ namespace ClientAPI
             btnGuardar.Enabled = false;
             try
             {
+                int id = EditarProducto?.Id ?? 0;
                 string nombre = txtNombreProducto.Text.Trim();
                 decimal.TryParse(txtPrecio.Text, out decimal precio);
                 int.TryParse(txtStock.Text, out int stock);
@@ -60,7 +61,7 @@ namespace ClientAPI
                     return;
                 }
 
-                ProductoDTO producto = new ProductoDTO(nombre, precio, stock);
+                ProductoDTO producto = new ProductoDTO(id, nombre, precio, stock);
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -74,21 +75,32 @@ namespace ClientAPI
                     if (EditarProducto == null)
                     {
                         respuesta = await client.PostAsync("https://localhost:7037/api/Productos", content);
-                    }
-                    else
-                    {
-                        respuesta = await client.PutAsync($"https://localhost:7037/api/Productos/{EditarProducto.Nombre}", content);
-                    }
 
-                    if (respuesta.IsSuccessStatusCode)
-                    {
-                        MessageBox.Show("Producto guardado exitosamente.");
-                        DialogResult = DialogResult.OK;
-                        this.Close();
+                        if (respuesta.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show("Producto guardado exitosamente.");
+                            DialogResult = DialogResult.OK;
+                            this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error al guardar el producto.");
+                        }
                     }
-                    else
+                    else if(EditarProducto != null)
                     {
-                        MessageBox.Show("Error al guardar el producto.");
+                        respuesta = await client.PutAsync($"https://localhost:7037/api/Productos/{EditarProducto.Id}", content);
+
+                        if (respuesta.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show("Producto actualizado exitosamente.");
+                            DialogResult = DialogResult.OK;
+                            this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error al actualizar el producto.");
+                        }
                     }
                 }
             }

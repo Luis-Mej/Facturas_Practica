@@ -1,4 +1,5 @@
-﻿using Dtos.ProductosDTOS;
+﻿using Dtos.FacturasDTOS;
+using Dtos.ProductosDTOS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,15 +14,14 @@ namespace ClientAPI
 {
     public partial class Carrito : Form
     {
-        private List<ProductoDTO> productoEnCarrito;
-        public Carrito(List<ProductoDTO> productosSeleccionados)
+        private List<FacturaDetDTO> productoEnCarrito;
+        public Carrito(List<FacturaDetDTO> productosSeleccionados)
         {
             InitializeComponent();
-            productoEnCarrito = productosSeleccionados.Select(p => new ProductoDTO
+            productoEnCarrito = productosSeleccionados.Select(p => new FacturaDetDTO
             {
-                Nombre = p.Nombre,
-                Precio = p.Precio,
-                Stock = p.Stock,
+                IdProducto = p.IdProducto,
+                Cantidad = p.Cantidad
             }).ToList();
 
             CargarProductosEnCarrito();
@@ -37,7 +37,7 @@ namespace ClientAPI
             dgvCarrito.Columns["Id"].Visible = false;
             dgvCarrito.Columns["Nombre"].HeaderText = "Nombre";
             dgvCarrito.Columns["Precio"].HeaderText = "Precio";
-            dgvCarrito.Columns["Stock"].HeaderText = "Stock";
+            dgvCarrito.Columns["Stock"].Visible = false ;
 
             DataGridViewTextBoxColumn cantidadCol = new DataGridViewTextBoxColumn
             {
@@ -52,23 +52,8 @@ namespace ClientAPI
 
         private void btnGenerarFact_Click(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow row in dgvCarrito.Rows)
-            {
-                if (row.Cells["Cantidad"].Value == null || !int.TryParse(row.Cells["Cantidad"].Value.ToString(), out int cantidad) || cantidad <= 0)
-                {
-                    MessageBox.Show("Por favor, seleccione una cantidad válida para todos los productos.");
-                    return;
-                }
-
-                int stock = Convert.ToInt32(row.Cells["Stock"].Value);
-                if (cantidad > stock)
-                {
-                    MessageBox.Show($"La cantidad seleccionada para {row.Cells["Nombre"].Value} excede el stock disponible.");
-                    return;
-                }
-
-                MessageBox.Show($"Producto: {row.Cells["Nombre"].Value}, Precio: {row.Cells["Precio"].Value}, Cantidad: {cantidad}");
-            }
+            var factura = new Factura(productoEnCarrito);
+            factura.ShowDialog();
         }
 
         private void btnVolver_Click(object sender, EventArgs e)
@@ -79,6 +64,11 @@ namespace ClientAPI
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
+            if(MessageBox.Show("¿Desea cancelar esta compra?", "Cancelar", MessageBoxButtons.YesNo) ==DialogResult.No)
+            {
+                return;
+            }
+
             productoEnCarrito.Clear();
             this.DialogResult = DialogResult.Cancel;
             this.Close();

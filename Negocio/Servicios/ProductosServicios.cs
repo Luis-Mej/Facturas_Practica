@@ -25,6 +25,7 @@ namespace Negocio.Servicios
         {
             var listaProductos = await _context.Productos.Where(x=> x.Estado =="A" && x.Stock!=0).Select(x => new ProductoDTO()
             {
+                Id = x.Id,
                 Nombre = x.Nombre,
                 Precio = x.Precio,
                 Stock = x.Stock,
@@ -76,9 +77,9 @@ namespace Negocio.Servicios
             return new ResponseBase<ProductoDTO>(200, "Producto ingresado");
         }
 
-        public async Task<ResponseBase<ProductoDTO>> PutProductosDTO(int id, ProductoDTO productoDTO)
+        public async Task<ResponseBase<ProductoDTO>> PutProductosDTO(ProductoDTO productoDTO)
         {
-            var productoExistente = await _context.Productos.FindAsync(id);
+            var productoExistente = await _context.Productos.FindAsync(productoDTO.Id);
             if (productoExistente == null || productoExistente.Estado != "A")
             {
                 return new ResponseBase<ProductoDTO>(400, "El producto no existe");
@@ -98,7 +99,7 @@ namespace Negocio.Servicios
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductoExists(id))
+                    if (!ProductoExists(productoDTO.Id))
                     {
                         await ts.RollbackAsync();
                         return new ResponseBase<ProductoDTO>(400, "El producto no existe");

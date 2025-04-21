@@ -40,9 +40,9 @@ namespace Practica.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProducto(int id, [FromBody] ProductoDTO productoDto)
+        public async Task<IActionResult> PutProducto([FromBody] ProductoDTO productoDto)
         {
-            var resultado = await _productoServicio.PutProductosDTO(id, productoDto);
+            var resultado = await _productoServicio.PutProductosDTO(productoDto);
             return StatusCode(resultado.StatusCode, resultado);
         }
 
