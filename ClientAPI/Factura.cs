@@ -78,7 +78,7 @@ namespace ClientAPI
             foreach (var item in productoCarrito)
             {
 
-                decimal precio = item.PrecioUnitario;
+                decimal precio = item.IdProducto;
                 int cantidad = item.Cantidad ?? 0;
 
                 decimal subtotal = precio * cantidad ;

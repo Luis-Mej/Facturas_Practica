@@ -43,7 +43,7 @@ namespace ClientAPI
 
         private void btnGenerarFact_Click(object sender, EventArgs e)
         {
-            var factura = new Factura(productoEnCarrito);
+            var factura = new Factura( productoEnCarrito);
             factura.ShowDialog();
         }
 
