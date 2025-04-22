@@ -14,8 +14,8 @@ namespace ClientAPI
 {
     public partial class Factura : Form
     {
-        private List<ProductoDTO> productoCarrito;
-        public Factura(List<ProductoDTO> productoEnCarrito)
+        private List<FacturaDetDTO> productoCarrito;
+        public Factura(List<FacturaDetDTO> productoEnCarrito)
         {
             InitializeComponent();
             this.productoCarrito = productoEnCarrito;

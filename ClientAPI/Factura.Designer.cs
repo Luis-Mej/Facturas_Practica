@@ -196,7 +196,7 @@
             // 
             dtFecha.Location = new Point(290, 21);
             dtFecha.Name = "dtFecha";
-            dtFecha.Size = new Size(200, 23);
+            dtFecha.Size = new Size(224, 23);
             dtFecha.TabIndex = 9;
             // 
             // txtEmail

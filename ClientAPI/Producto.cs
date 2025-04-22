@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sesion;
 using System.Net.Http.Headers;
+using Dtos.FacturasDTOS;
 
 namespace ClientAPI
 {
@@ -217,8 +218,15 @@ namespace ClientAPI
                 MessageBox.Show("No se han seleccionado productos.");
                 return;
             }
+            var detallesSeleccionados = seleccionados.Select(p => new FacturaDetDTO
+            {
+                IdProducto = p.Id,
+                NombreProducto = p.Nombre,
+                PrecioUnitario = p.Precio,
+                Cantidad = 1
+            }).ToList();
 
-            Carrito carritoForm = new Carrito(seleccionados);
+            Carrito carritoForm = new Carrito(detallesSeleccionados);
             carritoForm.ShowDialog();
         }
 

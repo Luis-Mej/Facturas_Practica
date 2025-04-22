@@ -18,12 +18,7 @@ namespace ClientAPI
         public Carrito(List<FacturaDetDTO> productosSeleccionados)
         {
             InitializeComponent();
-            productoEnCarrito = productosSeleccionados.Select(p => new FacturaDetDTO
-            {
-                IdProducto = p.IdProducto,
-                Cantidad = p.Cantidad
-            }).ToList();
-
+            productoEnCarrito = productosSeleccionados;
             CargarProductosEnCarrito();
         }
 
@@ -34,20 +29,16 @@ namespace ClientAPI
 
             dgvCarrito.DataSource = productoEnCarrito;
 
-            dgvCarrito.Columns["Id"].Visible = false;
-            dgvCarrito.Columns["Nombre"].HeaderText = "Nombre";
-            dgvCarrito.Columns["Precio"].HeaderText = "Precio";
-            dgvCarrito.Columns["Stock"].Visible = false ;
+            dgvCarrito.Columns["IdProducto"].Visible = false;
 
-            DataGridViewTextBoxColumn cantidadCol = new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Cantidad",
-                Name = "Cantidad",
-                ValueType = typeof(int),
-                Width = 70,
-            };
+            if (dgvCarrito.Columns["NombreProducto"] != null)
+                dgvCarrito.Columns["NombreProducto"].HeaderText = "Producto";
 
-            dgvCarrito.Columns.Add(cantidadCol);
+            if (dgvCarrito.Columns["PrecioUnitario"] != null)
+                dgvCarrito.Columns["PrecioUnitario"].HeaderText = "Precio Unitario";
+
+            if (dgvCarrito.Columns["Cantidad"] != null)
+                dgvCarrito.Columns["Cantidad"].HeaderText = "Cantidad";
         }
 
         private void btnGenerarFact_Click(object sender, EventArgs e)

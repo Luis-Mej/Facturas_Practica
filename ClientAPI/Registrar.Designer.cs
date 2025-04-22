@@ -35,8 +35,8 @@
             txtContrasenia = new TextBox();
             txtConfirContrasenia = new TextBox();
             panel1 = new Panel();
-            btnGuardar = new Button();
             btnCancelar = new Button();
+            btnGuardar = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -93,32 +93,32 @@
             panel1.Controls.Add(btnCancelar);
             panel1.Controls.Add(btnGuardar);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 338);
+            panel1.Location = new Point(0, 353);
             panel1.Name = "panel1";
-            panel1.Size = new Size(379, 50);
+            panel1.Size = new Size(379, 35);
             panel1.TabIndex = 6;
-            // 
-            // btnGuardar
-            // 
-            btnGuardar.Dock = DockStyle.Right;
-            btnGuardar.Location = new Point(304, 0);
-            btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(75, 50);
-            btnGuardar.TabIndex = 0;
-            btnGuardar.Text = "Guardar";
-            btnGuardar.UseVisualStyleBackColor = true;
-            btnGuardar.Click += btnGuardar_Click;
             // 
             // btnCancelar
             // 
             btnCancelar.Dock = DockStyle.Right;
             btnCancelar.Location = new Point(229, 0);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(75, 50);
+            btnCancelar.Size = new Size(75, 35);
             btnCancelar.TabIndex = 1;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
             btnCancelar.Click += btnCancelar_Click;
+            // 
+            // btnGuardar
+            // 
+            btnGuardar.Dock = DockStyle.Right;
+            btnGuardar.Location = new Point(304, 0);
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.Size = new Size(75, 35);
+            btnGuardar.TabIndex = 0;
+            btnGuardar.Text = "Guardar";
+            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += btnGuardar_Click;
             // 
             // Registrar
             // 
