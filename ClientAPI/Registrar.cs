@@ -31,7 +31,7 @@ namespace ClientAPI
             }
         }
 
-        private async Task btnGuardar_Click(object sender, EventArgs e)
+        private async void btnGuardar_Click(object sender, EventArgs e)
         {
             btnGuardar.Enabled = false;
 
