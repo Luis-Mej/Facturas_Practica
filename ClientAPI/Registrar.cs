@@ -15,13 +15,23 @@ using Dtos;
 namespace ClientAPI
 {
     public partial class Registrar : Form
-    { 
+    {
         public Registrar()
         {
             InitializeComponent();
         }
 
-        private void btnGuardar_Click(object sender, EventArgs e)
+
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Desea cancelar el registro del usuario", "Cancelar", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                this.Close();
+            }
+        }
+
+        private async Task btnGuardar_Click(object sender, EventArgs e)
         {
             btnGuardar.Enabled = false;
 
@@ -48,11 +58,11 @@ namespace ClientAPI
 
             var json = JsonSerializer.Serialize(usuarioDTOs);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = client.PostAsync(Url, content);
+            var response = await client.PostAsync(Url, content);
             if (response.IsSuccessStatusCode)
             {
                 var jsonResponse = response.Content.ReadAsStringAsync();
-                var parsed = JsonSerializer.Deserialize<ResponseBase<string>>(jsonResponse, new JsonSerializerOptions
+                var parsed = JsonSerializer.Deserialize<ResponseBase<string>>(await jsonResponse, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });
@@ -64,14 +74,6 @@ namespace ClientAPI
                 MessageBox.Show("Error al registrar el usuario.");
             }
             btnGuardar.Enabled = true;
-        }
-
-        private void btnCancelar_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Desea cancelar el registro del usuario", "Cancelar", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                this.Close();
-            }
         }
     }
 }
