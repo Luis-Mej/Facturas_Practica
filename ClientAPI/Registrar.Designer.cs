@@ -78,15 +78,19 @@
             // 
             txtContrasenia.Location = new Point(50, 169);
             txtContrasenia.Name = "txtContrasenia";
+            txtContrasenia.PasswordChar = '*';
             txtContrasenia.Size = new Size(258, 23);
             txtContrasenia.TabIndex = 4;
+            txtContrasenia.UseSystemPasswordChar = true;
             // 
             // txtConfirContrasenia
             // 
             txtConfirContrasenia.Location = new Point(50, 254);
             txtConfirContrasenia.Name = "txtConfirContrasenia";
+            txtConfirContrasenia.PasswordChar = '*';
             txtConfirContrasenia.Size = new Size(258, 23);
             txtConfirContrasenia.TabIndex = 5;
+            txtConfirContrasenia.UseSystemPasswordChar = true;
             // 
             // panel1
             // 
@@ -133,6 +137,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "Registrar";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Registrar";
             panel1.ResumeLayout(false);
             ResumeLayout(false);

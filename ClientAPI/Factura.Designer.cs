@@ -31,13 +31,11 @@
             panel1 = new Panel();
             btnVolver = new Button();
             btnCancelar = new Button();
-            btnImprimir = new Button();
+            btnGuardar = new Button();
             panel2 = new Panel();
-            txtCajero = new TextBox();
             txtTotal = new TextBox();
             txtIva = new TextBox();
             txtSubTotal = new TextBox();
-            label9 = new Label();
             label8 = new Label();
             label7 = new Label();
             label6 = new Label();
@@ -63,11 +61,11 @@
             // 
             panel1.Controls.Add(btnVolver);
             panel1.Controls.Add(btnCancelar);
-            panel1.Controls.Add(btnImprimir);
+            panel1.Controls.Add(btnGuardar);
             panel1.Dock = DockStyle.Bottom;
             panel1.Location = new Point(0, 489);
             panel1.Name = "panel1";
-            panel1.Size = new Size(526, 26);
+            panel1.Size = new Size(529, 26);
             panel1.TabIndex = 0;
             // 
             // btnVolver
@@ -84,7 +82,7 @@
             // btnCancelar
             // 
             btnCancelar.Dock = DockStyle.Right;
-            btnCancelar.Location = new Point(290, 0);
+            btnCancelar.Location = new Point(293, 0);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(117, 26);
             btnCancelar.TabIndex = 1;
@@ -92,23 +90,22 @@
             btnCancelar.UseVisualStyleBackColor = true;
             btnCancelar.Click += btnCancelar_Click;
             // 
-            // btnImprimir
+            // btnGuardar
             // 
-            btnImprimir.Dock = DockStyle.Right;
-            btnImprimir.Location = new Point(407, 0);
-            btnImprimir.Name = "btnImprimir";
-            btnImprimir.Size = new Size(119, 26);
-            btnImprimir.TabIndex = 0;
-            btnImprimir.Text = "Imprimir Factura";
-            btnImprimir.UseVisualStyleBackColor = true;
+            btnGuardar.Dock = DockStyle.Right;
+            btnGuardar.Location = new Point(410, 0);
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.Size = new Size(119, 26);
+            btnGuardar.TabIndex = 0;
+            btnGuardar.Text = "Guardar Factura";
+            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += btnGuardar_Click;
             // 
             // panel2
             // 
-            panel2.Controls.Add(txtCajero);
             panel2.Controls.Add(txtTotal);
             panel2.Controls.Add(txtIva);
             panel2.Controls.Add(txtSubTotal);
-            panel2.Controls.Add(label9);
             panel2.Controls.Add(label8);
             panel2.Controls.Add(label7);
             panel2.Controls.Add(label6);
@@ -125,20 +122,14 @@
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(526, 197);
+            panel2.Size = new Size(529, 165);
             panel2.TabIndex = 1;
-            // 
-            // txtCajero
-            // 
-            txtCajero.Location = new Point(290, 168);
-            txtCajero.Name = "txtCajero";
-            txtCajero.Size = new Size(100, 23);
-            txtCajero.TabIndex = 17;
             // 
             // txtTotal
             // 
             txtTotal.Location = new Point(290, 129);
             txtTotal.Name = "txtTotal";
+            txtTotal.ReadOnly = true;
             txtTotal.Size = new Size(100, 23);
             txtTotal.TabIndex = 16;
             // 
@@ -146,6 +137,7 @@
             // 
             txtIva.Location = new Point(290, 92);
             txtIva.Name = "txtIva";
+            txtIva.ReadOnly = true;
             txtIva.Size = new Size(100, 23);
             txtIva.TabIndex = 15;
             // 
@@ -153,17 +145,9 @@
             // 
             txtSubTotal.Location = new Point(290, 56);
             txtSubTotal.Name = "txtSubTotal";
+            txtSubTotal.ReadOnly = true;
             txtSubTotal.Size = new Size(100, 23);
             txtSubTotal.TabIndex = 14;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new Point(225, 170);
-            label9.Name = "label9";
-            label9.Size = new Size(47, 15);
-            label9.TabIndex = 13;
-            label9.Text = "Cajero: ";
             // 
             // label8
             // 
@@ -278,9 +262,9 @@
             // 
             panel3.Controls.Add(dgvDetalles);
             panel3.Dock = DockStyle.Fill;
-            panel3.Location = new Point(0, 197);
+            panel3.Location = new Point(0, 165);
             panel3.Name = "panel3";
-            panel3.Size = new Size(526, 292);
+            panel3.Size = new Size(529, 324);
             panel3.TabIndex = 2;
             // 
             // dgvDetalles
@@ -289,14 +273,14 @@
             dgvDetalles.Dock = DockStyle.Fill;
             dgvDetalles.Location = new Point(0, 0);
             dgvDetalles.Name = "dgvDetalles";
-            dgvDetalles.Size = new Size(526, 292);
+            dgvDetalles.Size = new Size(529, 324);
             dgvDetalles.TabIndex = 0;
             // 
             // Factura
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(526, 515);
+            ClientSize = new Size(529, 515);
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
@@ -328,12 +312,10 @@
         private Label label2;
         private Label label1;
         private Button btnCancelar;
-        private Button btnImprimir;
+        private Button btnGuardar;
         private Label label6;
-        private Label label9;
         private Label label8;
         private Label label7;
-        private TextBox txtCajero;
         private TextBox txtTotal;
         private TextBox txtIva;
         private TextBox txtSubTotal;

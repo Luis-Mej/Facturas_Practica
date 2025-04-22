@@ -4,11 +4,15 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Dtos;
 using Dtos.FacturasDTOS;
 using Dtos.ProductosDTOS;
+using Sesion;
 
 namespace ClientAPI
 {
@@ -78,10 +82,10 @@ namespace ClientAPI
             foreach (var item in productoCarrito)
             {
 
-                decimal precio = item.IdProducto;
+                decimal precio = item.PrecioUnitario;
                 int cantidad = item.Cantidad ?? 0;
 
-                decimal subtotal = precio * cantidad ;
+                decimal subtotal = precio * cantidad;
                 decimal iva = subtotal * 0.15M;
                 decimal total = subtotal + iva;
 
@@ -108,6 +112,39 @@ namespace ClientAPI
         {
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        private async void btnGuardar_Click(object sender, EventArgs e)
+        {
+            var guardarFactura = new FacturaDTO();
+
+            guardarFactura.FacturaCab = new FacturaCabDTO(txtCliente.Text, txtIdentificacion.Text, txtTelefono.Text, txtEmail.Text, DateTime.Now, decimal.Parse(txtSubTotal.Text), decimal.Parse(txtIva.Text), decimal.Parse(txtTotal.Text), SesionActual.IdUsuario);
+
+            guardarFactura.Detalles = productoCarrito;
+
+            using HttpClient client = new HttpClient();
+            string Url = "https://localhost:7037/api/Facturas";
+            var json = JsonSerializer.Serialize(guardarFactura);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(Url, content);
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", SesionActual.Token);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = response.Content.ReadAsStringAsync().Result;
+                var parsed = JsonSerializer.Deserialize<ResponseBase<string>>(jsonResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                MessageBox.Show("Factura guardada exitosamente");
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Error al guardar la factura");
+            }
         }
     }
 }

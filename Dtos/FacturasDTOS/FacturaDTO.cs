@@ -8,6 +8,10 @@ namespace Dtos.FacturasDTOS
 {
     public class FacturaDTO
     {
+        public FacturaDTO()
+        {
+        }
+
         public FacturaDTO(FacturaCabDTO facturaCab, List<FacturaDetDTO> detalles)
         {
             FacturaCab = facturaCab;

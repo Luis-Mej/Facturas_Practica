@@ -43,6 +43,11 @@ namespace ClientAPI
 
                 SesionActual.Token = parsed.Data;
 
+                if (SesionActual.Token == null)
+                {
+                    MessageBox.Show("Error al iniciar sesión");
+                    return;
+                }
                 MessageBox.Show("Login exitoso");
                 this.Hide();
 

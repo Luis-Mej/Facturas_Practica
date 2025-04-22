@@ -29,6 +29,7 @@ namespace ClientAPI
             {
                 this.Close();
             }
+            return;
         }
 
         private async void btnGuardar_Click(object sender, EventArgs e)
@@ -68,6 +69,7 @@ namespace ClientAPI
                 });
                 MessageBox.Show("Usuario registrado exitosamente.");
                 this.Close();
+                return;
             }
             else
             {

@@ -221,6 +221,8 @@ namespace ClientAPI
             var detallesSeleccionados = seleccionados.Select(p => new FacturaDetDTO
             {
                 IdProducto = p.Id,
+                NombreProducto = p.Nombre,
+                PrecioUnitario = p.Precio,
                 Cantidad = 1
             }).ToList();
 
@@ -243,10 +245,9 @@ namespace ClientAPI
             {
                 Login login = new Login();
                 login.FormClosed += (s, args) => this.Close();
+                this.Hide();
                 login.Show();
             }
-
-
         }
     }
 }
