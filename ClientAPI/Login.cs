@@ -33,9 +33,12 @@ namespace ClientAPI
             using var doc = JsonDocument.Parse(jsonString);
             var root = doc.RootElement;
 
-            if (root.TryGetProperty("idUsuario", out var idUsuario))
-                return idUsuario.GetInt32();
-
+            if (root.TryGetProperty("idUsuario", out var idUsuarioProp))
+            {
+                var idUsuarioStr = idUsuarioProp.GetString();
+                if (int.TryParse(idUsuarioStr, out var idUsuario))
+                    return idUsuario;
+            }
             return 0;
         }
 
@@ -66,6 +69,7 @@ namespace ClientAPI
             string Url = "https://localhost:7037/api/Login";
             var json = JsonSerializer.Serialize(usuarioLoginDTO);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
+            //MessageBox.Show("JSON enviado: " + json);
             var response = await client.PostAsync(Url, content);
 
             if (response.IsSuccessStatusCode)
@@ -81,7 +85,7 @@ namespace ClientAPI
                 SesionActual.Token = parsed.Data;
                 SesionActual.IdUsuario = ObtenerIdUsuarioDesdeToken(parsed.Data);
 
-                MessageBox.Show("ID de usuario extraído del token: " + SesionActual.IdUsuario);
+                //MessageBox.Show("ID de usuario extraído del token: " + SesionActual.IdUsuario);
 
 
                 if (SesionActual.Token == null && SesionActual.IdUsuario ==0)

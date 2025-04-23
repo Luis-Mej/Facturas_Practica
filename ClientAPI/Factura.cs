@@ -140,11 +140,6 @@ namespace ClientAPI
 
             if (response.IsSuccessStatusCode)
             {
-                var jsonResponse = response.Content.ReadAsStringAsync().Result;
-                var parsed = JsonSerializer.Deserialize<ResponseBase<string>>(jsonResponse, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
                 MessageBox.Show("Factura guardada exitosamente");
                 this.DialogResult = DialogResult.OK;
                 this.Close();

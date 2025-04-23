@@ -24,7 +24,7 @@ namespace JWT.JwtServicios
             {
                 new Claim(ClaimTypes.Name, usuario.Nombre),
                 new Claim("CodigoUsuario", usuario.CodigoUsuario),
-                new Claim("IdUsuario", usuario.IdUsuario.ToString()),
+                new Claim("idUsuario", usuario.IdUsuario.ToString()),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]!));
