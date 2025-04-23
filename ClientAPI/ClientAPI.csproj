@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -11,6 +11,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Dtos\Dtos.csproj" />
     <ProjectReference Include="..\Sesion\Sesion.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dto\" />
   </ItemGroup>
 
 </Project>

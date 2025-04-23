@@ -18,7 +18,7 @@ namespace Dtos.FacturasDTOS
             Detalles = detalles;
         }
 
-        public FacturaCabDTO FacturaCab { get; set; } = null!;
+        public FacturaCabDTO FacturaCab { get; set; } 
         public List<FacturaDetDTO> Detalles { get; set; } = new List<FacturaDetDTO>();
     }
 }

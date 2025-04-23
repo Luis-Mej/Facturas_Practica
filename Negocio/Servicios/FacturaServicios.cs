@@ -54,7 +54,7 @@ namespace Negocio.Servicios
                         Cantidad = d.Cantidad,
                         NombreProducto = _context.Productos.FirstOrDefault(p => p.Id == d.IdProducto).Nombre,
                         Precio = _context.Productos.FirstOrDefault(p => p.Id == d.IdProducto).Precio,
-                    }).ToList()
+                    }).ToArray()
 
                 };
                 return new ResponseBase<FacturaVisualDTO>(200, "Facturas obtenidas", facturaVisualDTO);

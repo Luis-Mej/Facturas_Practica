@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>8c936f27-1325-4677-a98e-dc7c0474aad1</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Facturacion.Shared.Dto</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)FacturasDTOS\FactCabeceraDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FacturasDTOS\FactDetalleDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FacturasDTOS\FacturaCabDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FacturasDTOS\FacturaDetDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FacturasDTOS\FacturaDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FacturasDTOS\FacturaVisualDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProductosDTOS\ProductoDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ResponseBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UsuariosDTOS\LoginResponseDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UsuariosDTOS\UsuarioDTOs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UsuariosDTOS\UsuarioLoginDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UsuariosDTOS\UsuariosDT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UsuariosDTOS\UsuarioTokenDTO.cs" />
+  </ItemGroup>
+</Project>

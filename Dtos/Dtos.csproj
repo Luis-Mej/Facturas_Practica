@@ -16,4 +16,6 @@
 		<ProjectReference Include="..\Entidades\Entidades.csproj" />
 	</ItemGroup>
 
+	<Import Project="..\Facturacion.Shared.Dto\Facturacion.Shared.Dto.projitems" Label="Shared" />
+
 </Project>
