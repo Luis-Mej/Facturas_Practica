@@ -8,13 +8,18 @@ namespace Dtos.UsuariosDTOS
 {
     public class UsuarioLoginDTO
     {
-        public UsuarioLoginDTO(string nombre, string contrasenia)
+        public UsuarioLoginDTO()
+        {
+        }
+        public UsuarioLoginDTO(string nombre, string contrasenia, int idUsuario = 0)
         {
             Nombre = nombre;
             Contrasenia = contrasenia;
+            IdUsuario = idUsuario;
         }
 
         public string Nombre { get; set; } = string.Empty;
         public string Contrasenia { get; set; } = string.Empty;
+        public int IdUsuario { get; set; }
     }
 }

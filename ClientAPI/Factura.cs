@@ -116,6 +116,12 @@ namespace ClientAPI
 
         private async void btnGuardar_Click(object sender, EventArgs e)
         {
+            if (SesionActual.IdUsuario == null)
+            {
+                MessageBox.Show("Error: Usuario inválido");
+                return;
+            }
+
             var guardarFactura = new FacturaDTO();
 
             guardarFactura.FacturaCab = new FacturaCabDTO(txtCliente.Text, txtIdentificacion.Text, txtTelefono.Text, txtEmail.Text, DateTime.Now, decimal.Parse(txtSubTotal.Text), decimal.Parse(txtIva.Text), decimal.Parse(txtTotal.Text), SesionActual.IdUsuario);
@@ -124,11 +130,13 @@ namespace ClientAPI
 
             using HttpClient client = new HttpClient();
             string Url = "https://localhost:7037/api/Facturas";
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", SesionActual.Token);
+
             var json = JsonSerializer.Serialize(guardarFactura);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await client.PostAsync(Url, content);
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", SesionActual.Token);
 
             if (response.IsSuccessStatusCode)
             {

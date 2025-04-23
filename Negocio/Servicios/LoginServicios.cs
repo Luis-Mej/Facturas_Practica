@@ -28,12 +28,12 @@ namespace Negocio.Servicios
             var usuario = await _context.Usuarios
                 .FirstOrDefaultAsync(x => x.CodigoUsuario == loginDto.Nombre);
 
-            if (usuario != null && string.IsNullOrEmpty(loginDto.Contrasenia) && loginDto.Contrasenia != Encriptador.Encriptar(loginDto.Contrasenia))
+            if (usuario == null || usuario.Contrasenia != Encriptador.Encriptar(loginDto.Contrasenia))
             {
                 return new ResponseBase<string>(400, "Credenciales incorrectas");
             }
 
-            var usuarioDto = new UsuariosDT(loginDto.Nombre, loginDto.Contrasenia);
+            var usuarioDto = new UsuariosDT(usuario.IdUsuario, usuario.Nombre, usuario.Contrasenia);
             string token = _tokenServicio.CrearToken(usuarioDto);
             return new ResponseBase<string>(200, "Login exitoso", token);
         }

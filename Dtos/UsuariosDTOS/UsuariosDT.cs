@@ -12,12 +12,14 @@ namespace Dtos.UsuariosDTOS
         {
         }
 
-        public UsuariosDT(string nombre, string codigoUsuario)
+        public UsuariosDT(int idUsuario, string nombre, string codigoUsuario)
         {
+            IdUsuario = idUsuario;
             Nombre = nombre;
             CodigoUsuario = codigoUsuario;
         }
 
+        public int IdUsuario { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string CodigoUsuario { get; set; } = string.Empty;
     }

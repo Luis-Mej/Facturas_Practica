@@ -21,9 +21,45 @@ namespace ClientAPI
             InitializeComponent();
         }
 
+        private int ObtenerIdUsuarioDesdeToken(string token)
+        {
+            var partes = token.Split('.');
+            if (partes.Length != 3) return 0;
+
+            var payload = partes[1];
+            var jsonBytes = Base64UrlDecode(payload);
+            var jsonString = Encoding.UTF8.GetString(jsonBytes);
+
+            using var doc = JsonDocument.Parse(jsonString);
+            var root = doc.RootElement;
+
+            if (root.TryGetProperty("idUsuario", out var idUsuario))
+                return idUsuario.GetInt32();
+
+            return 0;
+        }
+
+        private byte[] Base64UrlDecode(string input)
+        {
+            input = input.Replace('-', '+').Replace('_', '/');
+            switch (input.Length % 4)
+            {
+                case 2: input += "=="; break;
+                case 3: input += "="; break;
+                case 0: break;
+                default: throw new FormatException("Token inválido");
+            }
+            return Convert.FromBase64String(input);
+        }
+
         private async void btnLogin_Click(object sender, EventArgs e)
         {
-            UsuarioLoginDTO usuarioLoginDTO = new UsuarioLoginDTO(txtLogin.Text, txtContrasena.Text);
+            UsuarioLoginDTO usuarioLoginDTO = new UsuarioLoginDTO
+            {
+                Nombre = txtLogin.Text,
+                Contrasenia = txtContrasena.Text
+            };
+
 
             using HttpClient client = new HttpClient();
 
@@ -35,6 +71,7 @@ namespace ClientAPI
             if (response.IsSuccessStatusCode)
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
+                
 
                 var parsed = JsonSerializer.Deserialize<ResponseBase<string>>(jsonResponse, new JsonSerializerOptions
                 {
@@ -42,8 +79,12 @@ namespace ClientAPI
                 });
 
                 SesionActual.Token = parsed.Data;
+                SesionActual.IdUsuario = ObtenerIdUsuarioDesdeToken(parsed.Data);
 
-                if (SesionActual.Token == null)
+                MessageBox.Show("ID de usuario extraído del token: " + SesionActual.IdUsuario);
+
+
+                if (SesionActual.Token == null && SesionActual.IdUsuario ==0)
                 {
                     MessageBox.Show("Error al iniciar sesión");
                     return;
