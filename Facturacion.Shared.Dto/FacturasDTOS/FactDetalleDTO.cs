@@ -12,7 +12,7 @@ namespace Dtos.FacturasDTOS
         {
         }
 
-        public FactDetalleDTO(string nombreProducto, decimal precio, int? cantidad)
+        public FactDetalleDTO(string nombreProducto, decimal precio, int cantidad)
         {
             NombreProducto = nombreProducto;
             Precio = precio;
@@ -21,7 +21,7 @@ namespace Dtos.FacturasDTOS
 
         public string NombreProducto { get; set; } = string.Empty;
         public decimal Precio { get; set; }
-        public int? Cantidad { get; set; }
+        public int Cantidad { get; set; }
 
     }
 }

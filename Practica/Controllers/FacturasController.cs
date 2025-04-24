@@ -20,7 +20,7 @@ namespace Practica.Controllers
             _facturaServicio = facturaServicio;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), AllowAnonymous]
         public async Task<IActionResult> GetFactura(int id)
         {
             var resultado = _facturaServicio.GetFacturaById(id);
