@@ -31,7 +31,7 @@ namespace Negocio.Servicios
                 SubTotal = x.SubTotal,
                 Iva = x.Iva,
                 Total = x.Total,
-                NombreUsuario = _context.Usuarios.FirstOrDefault(u => u.IdUsuario == x.IdUsuario).CodigoUsuario
+                NombreUsuario = x.IdUsuario.ToString()
 
             }).ToListAsync();
             return new ResponseBase<List<FactCabeceraDTO>>(200, listaFacturas);
