@@ -19,6 +19,24 @@ namespace Negocio.Servicios
             _context = context;
         }
 
+        public async Task<ResponseBase<List<FactCabeceraDTO>>> GetFacturas()
+        {
+            var listaFacturas = await _context.CabFacts.Select(x => new FactCabeceraDTO()
+            {
+                NombreCliente = x.NombreCliente,
+                Identificacion = x.Identificacion,
+                Telefono = x.Telefono,
+                Email = x.Email,
+                FechaCreacion = x.FechaCreacion,
+                SubTotal = x.SubTotal,
+                Iva = x.Iva,
+                Total = x.Total,
+                NombreUsuario = _context.Usuarios.FirstOrDefault(u => u.IdUsuario == x.IdUsuario).CodigoUsuario
+
+            }).ToListAsync();
+            return new ResponseBase<List<FactCabeceraDTO>>(200, listaFacturas);
+        }
+        
         public ResponseBase<FacturaVisualDTO> GetFacturaById(int idFactura)
         {
             try

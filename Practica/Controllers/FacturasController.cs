@@ -20,8 +20,15 @@ namespace Practica.Controllers
             _facturaServicio = facturaServicio;
         }
 
+        [HttpGet, AllowAnonymous]
+        public async Task<IActionResult> GetFacturas()
+        {
+            var resultado = await _facturaServicio.GetFacturas();
+            return StatusCode(resultado.StatusCode, resultado);
+        }
+
         [HttpGet("{id}"), AllowAnonymous]
-        public async Task<IActionResult> GetFactura(int id)
+        public async Task<IActionResult> GetFacturaById(int id)
         {
             var resultado = _facturaServicio.GetFacturaById(id);
             return StatusCode(resultado.StatusCode, resultado);
