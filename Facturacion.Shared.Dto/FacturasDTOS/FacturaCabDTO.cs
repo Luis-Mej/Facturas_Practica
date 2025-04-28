@@ -8,8 +8,12 @@ namespace Dtos.FacturasDTOS
 {
     public class FacturaCabDTO
     {
+        public FacturaCabDTO()
+        {
+        }
         public FacturaCabDTO(string nombreCliente, string identificacion, string telefono, string email, DateTime? fechaCreacion, decimal subTotal, decimal? iva, decimal? total, int? idUsuario)
         {
+
             NombreCliente = nombreCliente;
             Identificacion = identificacion;
             Telefono = telefono;
@@ -20,7 +24,6 @@ namespace Dtos.FacturasDTOS
             Total = total;
             IdUsuario = idUsuario;
         }
-
         public string NombreCliente { get; set; } = string.Empty;
         public string Identificacion { get; set; } = string.Empty;
         public string Telefono { get; set; } = string.Empty;

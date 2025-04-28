@@ -63,21 +63,20 @@ namespace Negocio.Servicios
             }
             return new ResponseBase<UsuarioDTOs>(200, "Usuario registrado.");
         }
-
-        public async Task<ResponseBase<UsuarioDTOs>> PutUsuario(int id, UsuarioDTOs usuarioDTOs)
+        //Revisar si es posible
+        public async Task<ResponseBase<UsuarioDTOs>> PutUsuario(UsuarioDTOs usuarioDTOs)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null || usuario.Estado != "A")
+            var usuarioExiste = await _context.Usuarios.FindAsync(usuarioDTOs.Id);
+            if (usuarioExiste == null || usuarioExiste.Estado != "A")
             {
                 return new ResponseBase<UsuarioDTOs>(400, "El usuario no existe");
             }
 
             using var ts = await _context.Database.BeginTransactionAsync();
             {
-
-                usuario.Nombre = usuarioDTOs.Nombre;
-                usuario.CodigoUsuario = usuarioDTOs.Nombre.GenerarNombreUsuario();
-                usuario.Contrasenia = usuarioDTOs.Contrasenia;
+                usuarioExiste.Nombre = usuarioDTOs.Nombre;
+                usuarioExiste.CodigoUsuario = usuarioDTOs.Nombre.GenerarNombreUsuario();
+                usuarioExiste.Contrasenia = Encriptador.Encriptar(usuarioDTOs.Contrasenia);
 
                 try
                 {
@@ -86,7 +85,7 @@ namespace Negocio.Servicios
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioExists(id))
+                    if (!UsuarioExists(usuarioDTOs.Id))
                     {
                         await ts.RollbackAsync();
                         return new ResponseBase<UsuarioDTOs>(400, "El usuario no coincide con el id");
@@ -98,7 +97,7 @@ namespace Negocio.Servicios
                     }
                 }
             }
-            return new ResponseBase<UsuarioDTOs>(500, "No se encuentra al usuario");
+            return new ResponseBase<UsuarioDTOs>(200, "Usuario Actualizado");
         }
 
         public async Task<ResponseBase<UsuarioDTOs>> DeleteUsuarioDTO(int id)
