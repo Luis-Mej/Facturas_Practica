@@ -13,11 +13,11 @@ namespace Dtos.UsuariosDTOS
         { }
         public UsuarioDTOs(string nombre, string contrasenia)
         {
+            Id = id;
             Nombre = nombre;
             Contrasenia = contrasenia;
         }
 
-        public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Contrasenia { get; set; } = string.Empty;
 

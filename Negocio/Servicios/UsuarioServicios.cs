@@ -63,11 +63,11 @@ namespace Negocio.Servicios
             }
             return new ResponseBase<UsuarioDTOs>(200, "Usuario registrado.");
         }
-
-        public async Task<ResponseBase<UsuarioDTOs>> PutUsuario(int id, UsuarioDTOs usuarioDTOs)
+        //Revisar si es posible
+        public async Task<ResponseBase<UsuarioDTOs>> PutUsuario(UsuarioDTOs usuarioDTOs)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null || usuario.Estado != "A")
+            var usuarioExiste = await _context.Usuarios.FindAsync(usuarioDTOs.Id);
+            if (usuarioExiste == null || usuarioExiste.Estado != "A")
             {
                 return new ResponseBase<UsuarioDTOs>(400, "El usuario no existe");
             }
@@ -88,8 +88,6 @@ namespace Negocio.Servicios
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateConcurrencyException)
                 {
-                    await ts.RollbackAsync();
-
                     if (!UsuarioExists(id))
                     {
                         
@@ -102,6 +100,7 @@ namespace Negocio.Servicios
                     }
                 }
             }
+            return new ResponseBase<UsuarioDTOs>(500, "No se encuentra al usuario");
         }
 
         public async Task<ResponseBase<UsuarioDTOs>> DeleteUsuarioDTO(int id)

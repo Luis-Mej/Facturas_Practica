@@ -30,7 +30,7 @@ namespace Practica.Controllers
         }
 
         [HttpGet("{id}"), AllowAnonymous]
-        public async Task<IActionResult> GetFactura(int id)
+        public async Task<IActionResult> GetFacturaById(int id)
         {
             var resultado = _facturaServicio.GetFacturaById(id);
             return StatusCode(resultado.StatusCode, resultado);

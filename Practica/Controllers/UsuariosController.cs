@@ -34,9 +34,9 @@ namespace Practica.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsuario(int id, [FromBody] UsuarioDTOs usuarioDto)
+        public async Task<IActionResult> PutUsuario([FromBody] UsuarioDTOs usuarioDto)
         {
-            var resultado = await _usuarioServicio.PutUsuario(id, usuarioDto);
+            var resultado = await _usuarioServicio.PutUsuario(usuarioDto);
             return StatusCode(resultado.StatusCode, resultado);
         }
 
