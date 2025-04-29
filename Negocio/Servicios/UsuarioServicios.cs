@@ -63,7 +63,7 @@ namespace Negocio.Servicios
             }
             return new ResponseBase<UsuarioDTOs>(200, "Usuario registrado.");
         }
-        //Revisar si es posible
+
         public async Task<ResponseBase<UsuarioDTOs>> PutUsuario(UsuarioDTOs usuarioDTOs)
         {
             var usuarioExiste = await _context.Usuarios.FindAsync(usuarioDTOs.Id);
@@ -76,10 +76,9 @@ namespace Negocio.Servicios
             {
                 try
                 {
-
-                    usuario.Nombre = usuarioDTOs.Nombre;
-                    usuario.CodigoUsuario = usuarioDTOs.Nombre.GenerarNombreUsuario();
-                    usuario.Contrasenia = usuarioDTOs.Contrasenia;
+                    usuarioExiste.Nombre = usuarioDTOs.Nombre;
+                    usuarioExiste.CodigoUsuario = usuarioDTOs.Nombre.GenerarNombreUsuario();
+                    usuarioExiste.Contrasenia = usuarioDTOs.Contrasenia;
 
                     await _context.SaveChangesAsync();
                     await ts.CommitAsync();
@@ -90,7 +89,6 @@ namespace Negocio.Servicios
                 {
                     if (!UsuarioExists(id))
                     {
-                        
                         return new ResponseBase<UsuarioDTOs>(400, "El usuario no coincide con el id");
                     }
                     else
@@ -100,7 +98,6 @@ namespace Negocio.Servicios
                     }
                 }
             }
-            return new ResponseBase<UsuarioDTOs>(500, "No se encuentra al usuario");
         }
 
         public async Task<ResponseBase<UsuarioDTOs>> DeleteUsuarioDTO(int id)
