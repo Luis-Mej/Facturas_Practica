@@ -74,21 +74,25 @@ namespace Negocio.Servicios
 
             using var ts = await _context.Database.BeginTransactionAsync();
             {
-
-                usuario.Nombre = usuarioDTOs.Nombre;
-                usuario.CodigoUsuario = usuarioDTOs.Nombre.GenerarNombreUsuario();
-                usuario.Contrasenia = usuarioDTOs.Contrasenia;
-
                 try
                 {
+
+                    usuario.Nombre = usuarioDTOs.Nombre;
+                    usuario.CodigoUsuario = usuarioDTOs.Nombre.GenerarNombreUsuario();
+                    usuario.Contrasenia = usuarioDTOs.Contrasenia;
+
                     await _context.SaveChangesAsync();
                     await ts.CommitAsync();
+
+                    return new ResponseBase<UsuarioDTOs>(200, "Usuario actualizado");
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateConcurrencyException)
                 {
+                    await ts.RollbackAsync();
+
                     if (!UsuarioExists(id))
                     {
-                        await ts.RollbackAsync();
+                        
                         return new ResponseBase<UsuarioDTOs>(400, "El usuario no coincide con el id");
                     }
                     else
@@ -98,7 +102,6 @@ namespace Negocio.Servicios
                     }
                 }
             }
-            return new ResponseBase<UsuarioDTOs>(500, "No se encuentra al usuario");
         }
 
         public async Task<ResponseBase<UsuarioDTOs>> DeleteUsuarioDTO(int id)

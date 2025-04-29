@@ -1,4 +1,6 @@
-﻿using Dtos.FacturasDTOS;
+﻿using Dtos;
+using Dtos.FacturasDTOS;
+using Facturacion.Shared.Dto.FacturasDTOS;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,6 +20,13 @@ namespace Practica.Controllers
         public FacturasController(FacturaServicios facturaServicio)
         {
             _facturaServicio = facturaServicio;
+        }
+
+        [HttpGet, AllowAnonymous]
+        public ActionResult<ResponseBase<List<FacturasDTOs>>> GetFacturas()
+        {
+            var resultado = _facturaServicio.GetFacturas();
+            return StatusCode(resultado.StatusCode, resultado);
         }
 
         [HttpGet("{id}"), AllowAnonymous]

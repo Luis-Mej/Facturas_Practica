@@ -8,6 +8,7 @@ using Dtos;
 using Dtos.FacturasDTOS;
 using Entidades.Context;
 using Entidades.Models;
+using Facturacion.Shared.Dto.FacturasDTOS;
 
 namespace Negocio.Servicios
 {
@@ -17,6 +18,28 @@ namespace Negocio.Servicios
         public FacturaServicios(PracticaContext context)
         {
             _context = context;
+        }
+
+        public ResponseBase<List<FacturasDTOs>> GetFacturas()
+        {
+            try
+            {
+                var cabeceras = _context.CabFacts
+                    .Select(f => new FacturasDTOs
+                    {
+                        IdFactura = f.IdFactura,
+                        NombreCliente = f.NombreCliente,
+                        FechaCreacion = f.FechaCreacion,
+                        Total = f.Total
+                    })
+                    .ToList();
+
+                return new ResponseBase<List<FacturasDTOs>>(200, "Cabeceras obtenidas", cabeceras);
+            }
+            catch (Exception)
+            {
+                return new ResponseBase<List<FacturasDTOs>>(400, "Error al obtener cabeceras");
+            }
         }
 
         public ResponseBase<FacturaVisualDTO> GetFacturaById(int idFactura)

@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FacturasDTOS\FacturaCabDTO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FacturasDTOS\FacturaDetDTO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FacturasDTOS\FacturaDTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FacturasDTOS\FacturasDTOs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FacturasDTOS\FacturaVisualDTO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProductosDTOS\ProductoDTO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ResponseBase.cs" />
