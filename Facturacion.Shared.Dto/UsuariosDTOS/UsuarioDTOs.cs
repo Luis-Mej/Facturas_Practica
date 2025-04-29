@@ -10,7 +10,9 @@ namespace Dtos.UsuariosDTOS
     public class UsuarioDTOs
     {
         public UsuarioDTOs() 
-        { }
+        { 
+        }
+
         public UsuarioDTOs(int id, string nombre, string contrasenia)
         {
             Id = id;

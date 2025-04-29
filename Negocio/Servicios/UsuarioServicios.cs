@@ -87,7 +87,7 @@ namespace Negocio.Servicios
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioExists(id))
+                    if (!UsuarioExists(usuarioDTOs.Id))
                     {
                         return new ResponseBase<UsuarioDTOs>(400, "El usuario no coincide con el id");
                     }
