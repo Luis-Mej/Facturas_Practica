@@ -22,7 +22,7 @@ namespace Negocio.Servicios
 
         public ResponseBase<List<FacturasDTOs>> GetFacturas()
         {
-            try
+              try
             {
                 var cabeceras = _context.CabFacts
                     .Select(f => new FacturasDTOs
