@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Facturacion.Shared.Dto.FacturasDTOS
+namespace Dto.FacturasDTOS
 {
     public class FacturasDTOs
     {
@@ -10,8 +10,10 @@ namespace Facturacion.Shared.Dto.FacturasDTOS
         {
 
         }
-        public FacturasDTOs(string nombreCliente, DateTime? fechaCreacion, decimal? total)
+
+        public FacturasDTOs(int idFactura, string nombreCliente, DateTime? fechaCreacion, decimal? total)
         {
+            IdFactura = idFactura;
             NombreCliente = nombreCliente;
             FechaCreacion = fechaCreacion;
             Total = total;

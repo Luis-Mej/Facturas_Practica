@@ -24,6 +24,8 @@ namespace Dtos.FacturasDTOS
             Total = total;
             IdUsuario = idUsuario;
         }
+
+        public int IdFactura { get; set; }
         public string NombreCliente { get; set; } = string.Empty;
         public string Identificacion { get; set; } = string.Empty;
         public string Telefono { get; set; } = string.Empty;

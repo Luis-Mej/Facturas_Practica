@@ -4,11 +4,11 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dto.FacturasDTOS;
 using Dtos;
 using Dtos.FacturasDTOS;
 using Entidades.Context;
 using Entidades.Models;
-using Facturacion.Shared.Dto.FacturasDTOS;
 
 namespace Negocio.Servicios
 {
@@ -29,7 +29,7 @@ namespace Negocio.Servicios
                     {
                         IdFactura = f.IdFactura,
                         NombreCliente = f.NombreCliente,
-                        FechaCreacion = f.FechaCreacion,
+                        FechaCreacion = f.FechaCreacion.GetValueOrDefault().Date,
                         Total = f.Total
                     })
                     .ToList();

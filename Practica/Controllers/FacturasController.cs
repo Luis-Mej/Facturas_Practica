@@ -1,6 +1,6 @@
-﻿using Dtos;
+﻿using Dto.FacturasDTOS;
+using Dtos;
 using Dtos.FacturasDTOS;
-using Facturacion.Shared.Dto.FacturasDTOS;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
