@@ -67,7 +67,7 @@ namespace Negocio.Servicios
         public async Task<ResponseBase<UsuarioDTOs>> PutUsuario(UsuarioDTOs usuarioDTOs)
         {
             var usuarioExiste = await _context.Usuarios.FindAsync(usuarioDTOs.Id);
-            if (usuarioExiste == null || usuarioExiste.Estado != "A")
+            if (usuarioExiste == null || usuarioExiste.Estado != "A" || usuarioExiste.IdUsuario == 0)
             {
                 return new ResponseBase<UsuarioDTOs>(400, "El usuario no existe");
             }
@@ -76,6 +76,7 @@ namespace Negocio.Servicios
             {
                 try
                 {
+                    usuarioExiste.IdUsuario = usuarioDTOs.Id;
                     usuarioExiste.Nombre = usuarioDTOs.Nombre;
                     usuarioExiste.CodigoUsuario = usuarioDTOs.Nombre.GenerarNombreUsuario();
                     usuarioExiste.Contrasenia = usuarioDTOs.Contrasenia;
