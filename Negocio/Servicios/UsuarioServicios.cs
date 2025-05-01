@@ -79,7 +79,7 @@ namespace Negocio.Servicios
                     usuarioExiste.IdUsuario = usuarioDTOs.Id;
                     usuarioExiste.Nombre = usuarioDTOs.Nombre;
                     usuarioExiste.CodigoUsuario = usuarioDTOs.Nombre.GenerarNombreUsuario();
-                    usuarioExiste.Contrasenia = usuarioDTOs.Contrasenia;
+                    usuarioExiste.Contrasenia = (Encriptador.Encriptar(usuarioDTOs.Contrasenia));
 
                     await _context.SaveChangesAsync();
                     await ts.CommitAsync();
